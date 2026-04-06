@@ -16,6 +16,7 @@ async function seed() {
   console.log('📦 Database "smartstay" ready');
 
   // Drop tables in reverse dependency order
+  await connection.query('DROP TABLE IF EXISTS allocations');
   await connection.query('DROP TABLE IF EXISTS complaints');
   await connection.query('DROP TABLE IF EXISTS payments');
   await connection.query('DROP TABLE IF EXISTS students');
@@ -56,6 +57,7 @@ async function seed() {
       name VARCHAR(100) NOT NULL,
       student_id_number VARCHAR(20) UNIQUE,
       contact VARCHAR(20),
+      address TEXT,
       room_id INT,
       user_id INT,
       course VARCHAR(100),
@@ -66,6 +68,21 @@ async function seed() {
     )
   `);
   console.log('✅ Students table created');
+
+  // Create Allocations table
+  await connection.query(`
+    CREATE TABLE allocations (
+      allocation_id INT AUTO_INCREMENT PRIMARY KEY,
+      student_id INT,
+      room_id INT,
+      check_in_date DATE NOT NULL,
+      check_out_date DATE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+      FOREIGN KEY (room_id) REFERENCES rooms(room_id) ON DELETE CASCADE
+    )
+  `);
+  console.log('✅ Allocations table created');
 
   // Create Payments table
   await connection.query(`
@@ -98,7 +115,7 @@ async function seed() {
   `);
   console.log('✅ Complaints table created');
 
-  // --- Seed Dummy Data ---
+  // ─── Seed Dummy Data ────────────────────────────────────────
 
   // Admin user
   const adminPass = await bcrypt.hash('admin123', 10);
@@ -168,6 +185,25 @@ async function seed() {
     );
   }
   console.log('✅ Students seeded (8 students)');
+
+  // Allocations (match each student to their room)
+  const allocations = [
+    [1, 1, '2024-08-15', null],
+    [2, 2, '2024-08-20', null],
+    [3, 4, '2024-09-01', null],
+    [4, 3, '2024-09-05', null],
+    [5, 5, '2024-09-10', null],
+    [6, 7, '2024-09-15', null],
+    [7, 8, '2024-10-01', null],
+    [8, 6, '2024-10-05', null],
+  ];
+  for (const [studentId, roomId, checkIn, checkOut] of allocations) {
+    await connection.query(
+      "INSERT INTO allocations (student_id, room_id, check_in_date, check_out_date) VALUES (?, ?, ?, ?)",
+      [studentId, roomId, checkIn, checkOut]
+    );
+  }
+  console.log('✅ Allocations seeded (8 records)');
 
   // Payments
   const payments = [
