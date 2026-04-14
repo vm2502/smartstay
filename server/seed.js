@@ -40,7 +40,7 @@ async function seed() {
   await connection.query(`
     CREATE TABLE rooms (
       room_id INT AUTO_INCREMENT PRIMARY KEY,
-      room_number VARCHAR(20) UNIQUE NOT NULL,
+      room_number VARCHAR(100) UNIQUE NOT NULL,
       type ENUM('Standard','Premium','Suite') DEFAULT 'Standard',
       capacity INT DEFAULT 2,
       rent DECIMAL(10,2) DEFAULT 5000.00,

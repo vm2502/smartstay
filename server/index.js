@@ -10,6 +10,7 @@ const paymentRoutes = require('./routes/payments');
 const complaintRoutes = require('./routes/complaints');
 const allocationRoutes = require('./routes/allocations');
 const dashboardRoutes = require('./routes/dashboard');
+const foodRoutes = require('./routes/foodRoutes');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/complaints', complaintRoutes);
 app.use('/api/allocations', allocationRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/food', foodRoutes);
 
 // ─── Health Check ───────────────────────────────────────────
 app.get('/api/health', (req, res) => {

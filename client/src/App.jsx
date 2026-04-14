@@ -10,6 +10,7 @@ import Payments from './pages/Payments';
 import Complaints from './pages/Complaints';
 import StudentComplaints from './pages/StudentComplaints';
 import Profile from './pages/Profile';
+import FoodMenu from './pages/FoodMenu';
 
 function ProtectedRoute({ children, role }) {
   const { user, loading } = useAuth();
@@ -43,6 +44,11 @@ function AppRoutes() {
         <Route index element={<StudentDashboard />} />
         <Route path="complaints" element={<StudentComplaints />} />
         <Route path="profile" element={<Profile />} />
+      </Route>
+
+      {/* Shared Route */}
+      <Route path="/food-menu" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route index element={<FoodMenu />} />
       </Route>
 
       {/* Default redirect */}

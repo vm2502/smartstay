@@ -7,11 +7,13 @@ const adminLinks = [
   { to: '/admin/students', icon: 'group', label: 'Students' },
   { to: '/admin/payments', icon: 'payments', label: 'Payments' },
   { to: '/admin/complaints', icon: 'report_problem', label: 'Complaints' },
+  { to: '/food-menu', icon: 'restaurant_menu', label: 'Food Menu' },
 ];
 
 const studentLinks = [
   { to: '/student', icon: 'dashboard', label: 'Dashboard' },
   { to: '/student/complaints', icon: 'report_problem', label: 'Complaints' },
+  { to: '/food-menu', icon: 'restaurant_menu', label: 'Food Menu' },
 ];
 
 export default function Sidebar() {
